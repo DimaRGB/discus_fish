@@ -28,7 +28,7 @@ function sendRequest(url, callback) {
 	});
 }
 
-var transactions = [], offset = 0, offsetSize, offsetMax;
+var transactions = [], offset = +process.argv[2] || 0, offsetSize, offsetMax;
 
 function getPageElements($) {
 	return $('#tx_container').find('.txdiv');
@@ -52,7 +52,8 @@ function addPage($, callback) {
 	var $transactions = getPageElements($);
 	grubTransactionPageNext($, $transactions, 0, function () {
 		var fileContent = JSON.stringify(transactions, null, 4);
-		fs.writeFile('discus_fish_temp.json', fileContent);
+		fs.writeFile('pages/discus_fish_time_' + (new Date).getTime() + '_offset_' + offset + '.json', fileContent);
+		transactions = [];
 		callback();
 	});
 }
@@ -98,19 +99,20 @@ function addTransactionPage($) {
 	});
 }
 
-sendRequest(discusFishUrl, function ($) {
+sendRequest(discusFishUrl + '?offset=' + offset, function ($) {
 	offsetSize = +getPageElements($).length;
 	offsetMax = +$('.pagination').find('li').last().prev().find('a').attr('href').split('?offset=')[1].split('&')[0];
 	addPage($, function() {
 		grubPageNext($, function () {
-			console.log('Transactions length: ' + transactions.length);
-			var fileContent = JSON.stringify(transactions, null, 4);
-			fs.writeFile('discus_fish_' + (new Date).getTime() + '.json', fileContent, function(err) {
-			    if( err )
-		        	console.log(err);
-			    else
-		      		console.log('The file was saved!');
-			});
+			console.log('Finish grub Discus Fish');
+			// console.log('Transactions length: ' + transactions.length);
+			// var fileContent = JSON.stringify(transactions, null, 4);
+			// fs.writeFile('discus_fish_' + (new Date).getTime() + '.json', fileContent, function(err) {
+			//     if( err )
+		 //        	console.log(err);
+			//     else
+		 //      		console.log('The file was saved!');
+			// });
 		});
 	});
 });
