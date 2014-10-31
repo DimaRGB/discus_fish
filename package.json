@@ -1,0 +1,8 @@
+{
+  "name": "discus_fish",
+  "main": "discus_fish.js",
+  "devDependencies": {
+    "jsdom": "",
+    "request": ""
+  }
+}
