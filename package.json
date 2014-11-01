@@ -3,6 +3,7 @@
   "main": "discus_fish.js",
   "devDependencies": {
     "jsdom": "",
-    "request": ""
+    "request": "",
+    "exec": "^0.1.2"
   }
 }
