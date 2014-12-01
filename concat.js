@@ -29,6 +29,14 @@ for( var i = 0; i < fileNames.length; i++ ) {
     }
 }
 
+transactions.sort(function (a, b) {
+    if( +a.blockN < +b.blockN )
+        return 1;
+    else if( +a.blockN > +b.blockN )
+        return -1;
+    return 0;
+});
+
 fileName = 'discus_fish_' + (new Date).getTime() + '.json';
 fs.writeFile(fileName, JSON.stringify(transactions, null, 4), function (err) {
     if( err )
